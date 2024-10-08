@@ -13,7 +13,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       body: Center(
         child: Text(
-          "Account Screen",
+          "Not Found",
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),

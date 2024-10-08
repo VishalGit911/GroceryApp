@@ -13,7 +13,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     return Scaffold(
       body: Center(
         child: Text(
-          "Favorite Screen",
+          "Not Found",
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),

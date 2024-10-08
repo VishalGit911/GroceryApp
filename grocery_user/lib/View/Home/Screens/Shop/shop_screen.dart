@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_user/Firebase/firebase_services.dart';
+import 'package:grocery_user/View/Home/Screens/CategoryProduct/category_product.dart';
 import 'package:grocery_user/View/Home/Screens/ShowDetailsProduct/show_details_product.dart';
 
 import '../../../../Model/product_model.dart';
@@ -19,38 +20,43 @@ class _ShopScreenState extends State<ShopScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: SearchBar(
-                  backgroundColor: WidgetStatePropertyAll(Colors.white),
-                  hintText: "Search",
-                  leading: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Icon(Icons.search),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: SearchBar(
+                    backgroundColor: WidgetStatePropertyAll(Colors.white),
+                    hintText: "Search",
+                    leading: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Icon(Icons.search),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, right: 10, top: 12, bottom: 10),
-                child: Text("Top Categories",
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
-              ),
-              Row(
-                children: [allCatogoryWithProduct()],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 12),
-                child: Text("Top Selling",
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
-              ),
-              topProductItem(),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 12, bottom: 10),
+                  child: Text("Top Categories",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [allCatogoryWithProduct()],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 12),
+                  child: Text("Top Selling",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
+                ),
+                topProductItem(),
+              ],
+            ),
           ),
         ),
       ),
@@ -58,7 +64,7 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   allCatogoryWithProduct() {
-    return Container(
+    return SizedBox(
       height: 100,
       child: StreamBuilder(
         stream: FirebaseServices().getAllCategory(),
@@ -77,17 +83,33 @@ class _ShopScreenState extends State<ShopScreen> {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
+                final alldata = snapshot.data![index];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundImage:
-                              NetworkImage(snapshot.data![index].imageUrl),
-                        )
-                      ],
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CategoryProductScreen(categoryId: alldata.id!)),
+                      );
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage:
+                                NetworkImage(snapshot.data![index].imageUrl),
+                          ),
+                          Text(
+                            snapshot.data![index].name,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -116,63 +138,67 @@ class _ShopScreenState extends State<ShopScreen> {
           } else if (snapshot.hasData) {
             List<ProductModel> data = snapshot.data!;
 
-            return GridView.builder(
-              itemCount: snapshot.data!.length,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ShowDetailsProduct(productModel: data[index]),
-                          ));
-                    },
-                    child: Card(
-                      elevation: 5,
-                      shadowColor: Colors.black,
-                      child: Container(
-                        width: 100,
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 0.2),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white70),
-                        padding: const EdgeInsets.all(5),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Container(
-                                height: 80,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    border: Border.all(),
-                                    image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: NetworkImage(
-                                            data[index].imageUrl))),
+            return Container(
+              child: GridView.builder(
+                controller: ScrollController(keepScrollOffset: false),
+                itemCount: snapshot.data!.length,
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ShowDetailsProduct(productModel: data[index]),
+                            ));
+                      },
+                      child: Card(
+                        elevation: 5,
+                        shadowColor: Colors.black,
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 0.2),
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white70),
+                          padding: const EdgeInsets.all(5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Container(
+                                  height: 80,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: NetworkImage(
+                                              data[index].imageUrl))),
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text("Name : ${data[index].name}"),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text("Price : ${data[index].price}")
-                          ],
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text("Name : ${data[index].name}"),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text("Price : ${data[index].price}")
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           } else {
             return Container();

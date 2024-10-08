@@ -13,7 +13,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       body: Center(
         child: Text(
-          "Cart Screen",
+          "Not Found",
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),

@@ -16,8 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List screenList = [
     ShopScreen(),
-    CartScreen(),
     FavoriteScreen(),
+    CartScreen(),
     AccountScreen(),
   ];
 

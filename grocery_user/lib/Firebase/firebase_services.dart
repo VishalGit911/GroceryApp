@@ -58,4 +58,44 @@ class FirebaseServices {
       },
     );
   }
+
+  // Stream<List<ProductModel>> getAllProductForCategory(
+  //     {required String categoryId}) {
+  //   return _firebaseDatabase
+  //       .ref()
+  //       .child("product")
+  //       .child("categoryId")
+  //       .equalTo(categoryId)
+  //       .onValue
+  //       .map(
+  //     (event) {
+  //
+  //     },
+  //   );
+  // }
+  Stream<List<ProductModel>> getProductsByCategory(String categoryId) {
+    return _firebaseDatabase
+        .ref()
+        .child('product')
+        .orderByChild('categoryId')
+        .equalTo(categoryId)
+        .onValue
+        .map((event) {
+      List<ProductModel> productList = [];
+
+      if (event.snapshot.exists) {
+        Map<dynamic, dynamic> productMap =
+            event.snapshot.value as Map<dynamic, dynamic>;
+
+        productMap.forEach(
+          (key, value) {
+            ProductModel productModel = ProductModel.fromJson(value);
+
+            productList.add(productModel);
+          },
+        );
+      }
+      return productList;
+    });
+  }
 }
