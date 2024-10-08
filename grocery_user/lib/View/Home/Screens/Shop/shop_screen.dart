@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_user/Firebase/firebase_services.dart';
 import 'package:grocery_user/View/Home/Screens/CategoryProduct/category_product.dart';
 import 'package:grocery_user/View/Home/Screens/ShowDetailsProduct/show_details_product.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../Model/product_model.dart';
 
@@ -70,8 +71,28 @@ class _ShopScreenState extends State<ShopScreen> {
         stream: FirebaseServices().getAllCategory(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return ListView.builder(
+              itemCount: 6, // Show a fixed number of shimmer placeholders
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundColor:
+                              Colors.grey[300], // Placeholder color
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -125,8 +146,59 @@ class _ShopScreenState extends State<ShopScreen> {
         stream: FirebaseServices().getallproduct(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return GridView.builder(
+              itemCount: 6, // Display 6 shimmer items
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+              ),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Card(
+                      elevation: 5,
+                      shadowColor: Colors.black,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 0.2),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white70,
+                        ),
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 80,
+                              width: 80,
+                              color: Colors.grey[300], // Shimmer placeholder
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 10,
+                              width: 60,
+                              color:
+                                  Colors.grey[300], // Shimmer text placeholder
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 10,
+                              width: 40,
+                              color:
+                                  Colors.grey[300], // Shimmer price placeholder
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
           } else if (snapshot.hasError) {
             return Container();

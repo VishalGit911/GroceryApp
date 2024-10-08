@@ -42,6 +42,7 @@ dependencies:
   pin_code_fields:
   persistent_bottom_nav_bar: ^6.2.1
   curved_navigation_bar:
+  shimmer:
 
 
 dev_dependencies:
