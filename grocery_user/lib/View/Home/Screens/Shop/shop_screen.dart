@@ -103,11 +103,6 @@ class _ShopScreenState extends State<ShopScreen> {
                             backgroundImage:
                                 NetworkImage(snapshot.data![index].imageUrl),
                           ),
-                          Text(
-                            snapshot.data![index].name,
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          )
                         ],
                       ),
                     ),
