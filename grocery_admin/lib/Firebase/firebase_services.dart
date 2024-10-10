@@ -8,7 +8,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:grocery_admin/Model/category_model.dart';
+import 'package:grocery_admin/Model/dashboard_model.dart';
 import 'package:grocery_admin/Model/product_model.dart';
+import 'package:grocery_admin/Model/user.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FirebaseServices {
@@ -254,5 +256,45 @@ class FirebaseServices {
     } catch (e) {
       return false;
     }
+  }
+
+  Stream<DashboardData> fatchDashBoardData() {
+    try {
+      return _firebaseDatabase.ref().onValue.map(
+        (event) {
+          final data = event.snapshot.value as Map<dynamic, dynamic>? ?? {};
+
+          return DashboardData(
+              totalCategories:
+                  data["category"] != null ? data["category"].length : 0,
+              totalItems: data["product"] != null ? data["product"].length : 0,
+              totalUsers: data["users"] != null ? data["users"].length : 0,
+              totalOrders: data["order"] != null ? data["order"].length : 0);
+        },
+      );
+    } catch (e) {
+      throw Exception('Failed to load dashboard data');
+    }
+  }
+
+  Stream<List<UserData>> getUserData() {
+    return _firebaseDatabase.ref().child("users").onValue.map(
+      (event) {
+        List<UserData> userList = [];
+        if (event.snapshot.exists) {
+          Map<dynamic, dynamic> userMap =
+              event.snapshot.value as Map<dynamic, dynamic>;
+
+          userMap.forEach(
+            (key, value) {
+              UserData userData = UserData.fromJson(value);
+
+              userList.add(userData);
+            },
+          );
+        }
+        return userList;
+      },
+    );
   }
 }

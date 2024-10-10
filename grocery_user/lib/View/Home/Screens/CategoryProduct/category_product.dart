@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_user/Firebase/firebase_services.dart';
 import 'package:grocery_user/View/Home/Screens/ShowDetailsProduct/show_details_product.dart';
-import '../../../../Model/product_model.dart';
+import '../../../../Model/product.dart';
 
 class CategoryProductScreen extends StatelessWidget {
   final String categoryId;

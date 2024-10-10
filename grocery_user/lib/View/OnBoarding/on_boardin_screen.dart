@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_user/View/Home/home_screen.dart';
-
+import 'package:grocery_user/View/Signi/Email/email_signup.dart';
 import '../../Widget/common_button.dart';
-import '../Signi/signin_screen.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -61,20 +59,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           padding: const EdgeInsets.only(top: 30),
                           child: CommanButton(
                               onPressed: () {
-                                // Navigator.pushAndRemoveUntil(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => SignInScreen(),
-                                //   ),
-                                //   (route) => false,
-                                // );
-
                                 Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomeScreen(),
-                                    ),
-                                    (route) => false);
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EmailSignUp(),
+                                  ),
+                                  (route) => false,
+                                );
+
+                                // Navigator.pushAndRemoveUntil(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => HomeScreen(),
+                                //     ),
+                                //     (route) => false);
                               },
                               text: Text(
                                 "Get Started",

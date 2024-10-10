@@ -40,6 +40,7 @@ dependencies:
   firebase_storage:
   firebase_core:
   image_picker:
+  shimmer:
 
 dev_dependencies:
   flutter_test:

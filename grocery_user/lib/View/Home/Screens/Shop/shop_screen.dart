@@ -4,7 +4,7 @@ import 'package:grocery_user/View/Home/Screens/CategoryProduct/category_product.
 import 'package:grocery_user/View/Home/Screens/ShowDetailsProduct/show_details_product.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../Model/product_model.dart';
+import '../../../../Model/product.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
