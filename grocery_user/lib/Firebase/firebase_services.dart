@@ -250,4 +250,27 @@ class FirebaseServices {
           .update(cart.toJson());
     } catch (e) {}
   }
+
+  bool deleteCartProduct({
+    required Cart cart,
+    required String cartID,
+  }) {
+    try {
+      String userId = _firebaseAuth.currentUser!.uid;
+
+      _firebaseDatabase
+          .ref()
+          .child("cart")
+          .child(userId)
+          .child("product")
+          .child(cartID)
+          .remove();
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> getUserDetails() async {}
 }

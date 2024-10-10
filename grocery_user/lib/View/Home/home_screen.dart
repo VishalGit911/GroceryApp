@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //       BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
       //     ]),
       bottomNavigationBar: NavigationBar(
+        backgroundColor: Colors.white,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         onDestinationSelected: (int index) {
           setState(() {
@@ -56,21 +57,22 @@ class _HomeScreenState extends State<HomeScreen> {
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
+            icon: Badge(child: Icon(Icons.home_outlined)),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Badge(child: Icon(Icons.favorite_border)),
+            selectedIcon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite_border),
             label: 'Favorite',
           ),
           NavigationDestination(
-            icon: Badge(
-              child: Icon(Icons.shopping_cart_outlined),
-            ),
+            selectedIcon: Icon(Icons.shopping_cart),
+            icon: Badge(child: Icon(Icons.shopping_cart_outlined)),
             label: 'Cart',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.person),
+            icon: Icon(Icons.perm_identity_outlined),
             label: 'Account',
           ),
         ],

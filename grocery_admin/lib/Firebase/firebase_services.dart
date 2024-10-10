@@ -297,4 +297,9 @@ class FirebaseServices {
       },
     );
   }
+
+  String? getUserEmail() {
+    String? email = _firebaseAuth.currentUser!.email;
+    return email;
+  }
 }

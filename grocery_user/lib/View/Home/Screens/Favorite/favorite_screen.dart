@@ -11,10 +11,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Text(
           "Not Found",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
     );
