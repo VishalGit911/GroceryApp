@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_user/Firebase/firebase_services.dart';
 import 'package:grocery_user/View/Home/Screens/AdressManage/adress_manage.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class AdressListScreen extends StatefulWidget {
   const AdressListScreen({super.key});
@@ -10,8 +11,19 @@ class AdressListScreen extends StatefulWidget {
 }
 
 class _AdressListScreenState extends State<AdressListScreen> {
+  Razorpay _razorpay = Razorpay();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -42,7 +54,24 @@ class _AdressListScreenState extends State<AdressListScreen> {
                 return Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      var options = {
+                        'key': 'rzp_test_zM4qU8Fjyzh49g',
+                        'amount': 50000, //in paise.
+                        'name': 'Acme Corp.',
+                        // Generate order_id using Orders API
+                        'description': 'Fine T-Shirt',
+                        'timeout': 60, // in seconds
+                        'prefill': {
+                          'contact': '9000090000',
+                          'email': 'gaurav.kumar@example.com'
+                        }
+                      };
+
+                      try {
+                        _razorpay.open(options);
+                      } catch (e) {}
+                    },
                     child: Card(
                       color: Colors.white,
                       shadowColor: Colors.black,
@@ -88,4 +117,10 @@ class _AdressListScreenState extends State<AdressListScreen> {
       ),
     );
   }
+
+  _handlePaymentSuccess() {}
+
+  _handlePaymentError() {}
+
+  _handleExternalWallet() {}
 }
