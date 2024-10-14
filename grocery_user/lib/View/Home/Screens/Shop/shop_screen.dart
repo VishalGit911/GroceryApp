@@ -156,7 +156,7 @@ class _ShopScreenState extends State<ShopScreen> {
               ),
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(2.0),
                   child: Shimmer.fromColors(
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.grey[100]!,
@@ -215,51 +215,48 @@ class _ShopScreenState extends State<ShopScreen> {
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 20),
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ShowDetailsProduct(productModel: data[index]),
-                            ));
-                      },
-                      child: Card(
-                        elevation: 5,
-                        shadowColor: Colors.black,
-                        child: Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 0.2),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white70),
-                          padding: const EdgeInsets.all(5),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Container(
-                                  height: 80,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                              data[index].imageUrl))),
-                                ),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ShowDetailsProduct(productModel: data[index]),
+                          ));
+                    },
+                    child: Card(
+                      elevation: 5,
+                      shadowColor: Colors.black,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 0.2),
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white70),
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                            data[index].imageUrl))),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text("Name : ${data[index].name}"),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text("Price : ${data[index].price}")
-                            ],
-                          ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text("Name : ${data[index].name}"),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text("Price : ${data[index].price}")
+                          ],
                         ),
                       ),
                     ),

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:grocery_user/Model/adress.dart';
 import 'package:grocery_user/Model/cart.dart';
 import 'package:grocery_user/Model/category.dart';
 
@@ -273,4 +274,74 @@ class FirebaseServices {
   }
 
   Future<void> getUserDetails() async {}
+
+  Future<void> addAdressFirebase(
+      {required String buildingno,
+      required String neararea,
+      required String city,
+      required String pincode,
+      required String state,
+      required BuildContext context}) async {
+    String userID = _firebaseAuth.currentUser!.uid;
+
+    final adressId =
+        _firebaseDatabase.ref().child("adress").child(userID).push().key;
+
+    AdressModel adressModel = AdressModel(
+        adressId: adressId,
+        buildingno: buildingno,
+        neararea: neararea,
+        city: city,
+        pincode: pincode,
+        state: state);
+
+    await _firebaseDatabase
+        .ref()
+        .child("adress")
+        .child(userID)
+        .child(adressId!)
+        .set(adressModel.toJson());
+
+    Navigator.pop(context);
+  }
+
+  Stream<List<AdressModel>> getAdress() {
+    String userId = _firebaseAuth.currentUser!.uid;
+
+    return _firebaseDatabase.ref().child("adress").child(userId).onValue.map(
+      (event) {
+        List<AdressModel> adressList = [];
+
+        if (event.snapshot.exists) {
+          Map<dynamic, dynamic> adressMap =
+              event.snapshot.value as Map<dynamic, dynamic>;
+
+          adressMap.forEach(
+            (key, value) {
+              AdressModel adressModel = AdressModel.fromJson(value);
+              adressList.add(adressModel);
+            },
+          );
+        }
+        return adressList;
+      },
+    );
+  }
+
+  bool deleteAdress({required String adressId}) {
+    String userID = _firebaseAuth.currentUser!.uid;
+
+    try {
+      _firebaseDatabase
+          .ref()
+          .child("adress")
+          .child(userID)
+          .child(adressId)
+          .remove();
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
