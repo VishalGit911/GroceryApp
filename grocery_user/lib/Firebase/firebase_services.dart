@@ -344,4 +344,29 @@ class FirebaseServices {
       return false;
     }
   }
+
+  Future<List<Cart>> getTotalPriceForCheckOut() async {
+    String userId = _firebaseAuth.currentUser!.uid;
+
+    List<Cart> cartListPrice = [];
+
+    DatabaseReference reference =
+        _firebaseDatabase.ref().child("cart").child(userId).child("product");
+
+    DataSnapshot snapshot = await reference.get();
+
+    if (snapshot.exists) {
+      Map<dynamic, dynamic> totalPriceMap =
+          snapshot.value as Map<dynamic, dynamic>;
+
+      totalPriceMap.forEach(
+        (key, value) {
+          Cart cart = Cart.fromJson(value);
+
+          cartListPrice.add(cart);
+        },
+      );
+    }
+    return cartListPrice;
+  }
 }
