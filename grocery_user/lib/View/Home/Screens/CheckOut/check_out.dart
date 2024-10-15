@@ -23,11 +23,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         height: 80,
         child: CommanButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdressListScreen(),
-                  ));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => AdressListScreen(),
+              //     ));
             },
             text: Text("Your Total bill : 2000"),
             backgroundColor: Colors.orange.shade300,
