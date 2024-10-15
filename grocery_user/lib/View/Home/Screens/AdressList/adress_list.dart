@@ -38,6 +38,33 @@ class _AdressListScreenState extends State<AdressListScreen> {
     super.dispose();
   }
 
+  void opencheckOut() {
+    FirebaseServices().getUserData().then(
+      (user) {
+        if (user != null) {
+          _userData = user;
+
+          var options = {
+            'key':
+                'rzp_test_zM4qU8Fjyzh49g', // Replace with your Razorpay API key
+            'amount': widget.orderData.totalAmount! *
+                100, // Razorpay takes the amount in the smallest currency unit (e.g., paise for INR)
+            'name': 'Grocery Store',
+
+            'contact': user.contact,
+            'prefill': {'email': user.email ?? 'test@gmail.com'},
+            'external': {
+              'wallets': ['paytm']
+            }
+          };
+          try {
+            _razorpay.open(options);
+          } catch (e) {}
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,23 +98,8 @@ class _AdressListScreenState extends State<AdressListScreen> {
                   padding: const EdgeInsets.all(12.0),
                   child: GestureDetector(
                     onTap: () {
-                      var options = {
-                        'key': 'rzp_test_zM4qU8Fjyzh49g',
-                        'amount':
-                            widget.orderData.totalAmount! * 100, //in paise.
-                        'name': 'Grocery Order.',
-                        // Generate order_id using Orders API
-                        'description': 'Fine T-Shirt',
-                        'timeout': 60, // in seconds
-                        'prefill': {
-                          'contact': '9000090000',
-                          'email': 'gaurav.kumar@example.com'
-                        }
-                      };
-
-                      try {
-                        _razorpay.open(options);
-                      } catch (e) {}
+                      widget.orderData.address = alladress;
+                      opencheckOut();
                     },
                     child: Card(
                       color: Colors.white,
