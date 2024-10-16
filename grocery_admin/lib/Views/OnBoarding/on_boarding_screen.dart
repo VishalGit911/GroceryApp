@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_admin/Views/SignIn/signin_screen.dart';
-import 'package:grocery_admin/Widget/common_botton.dart';
+import 'package:grocery_admin/Widget/common_notindicator.dart';
+
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -55,18 +56,32 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontSize: 18,
                           ),
                         ),
-                        CommonBotton(
-                            backgroundColor: Colors.green.shade800,
-                            foregroundColor: Colors.white,
-                            isloading: false,
-                            onPressed: () {
-                              Navigator.pushReplacement(
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30),
+                          child: CommanButton(
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => SignInScreen(),
-                                  ));
-                            },
-                            text: "Get Started")
+                                  ),
+                                      (route) => false,
+                                );
+
+                                // Navigator.pushAndRemoveUntil(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => HomeScreen(),
+                                //     ),
+                                //     (route) => false);
+                              },
+                              text: Text(
+                                "Get Started",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              backgroundColor: Colors.green.shade800,
+                              foregroundColor: Colors.white),
+                        )
                       ],
                     ),
                   ))

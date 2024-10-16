@@ -85,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           borderRadius: BorderRadius.circular(15))),
                 ),
               ),
-              CommonBotton(
+              CommonIndicatorButton(
                   backgroundColor: Colors.green.shade800,
                   foregroundColor: Colors.white,
                   isloading: isloading,

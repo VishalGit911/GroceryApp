@@ -1,13 +1,13 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:grocery_user/Model/adress.dart';
 import 'package:grocery_user/Model/cart.dart';
 import 'package:grocery_user/Model/category.dart';
-
+import 'package:grocery_user/Model/order.dart';
 import '../Model/product.dart';
 import '../Model/user.dart';
 
@@ -368,5 +368,48 @@ class FirebaseServices {
       );
     }
     return cartListPrice;
+  }
+
+  Future<bool> placeOrder(Order order) async {
+    String? id = _firebaseDatabase.ref().child("order").push().key;
+
+    order.orderId = id;
+
+    if (id != null) {
+      await _firebaseDatabase
+          .ref()
+          .child("order")
+          .child(id)
+          .set(order.toJson());
+
+      await _firebaseDatabase.ref().child("cart").child(order.userId!).remove();
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Stream<List<Order>> orderStream() {
+    var userId = _firebaseAuth.currentUser!.uid;
+
+    return _firebaseDatabase
+        .ref()
+        .child('order')
+        .orderByChild('userId')
+        .equalTo(userId)
+        .onValue
+        .map((event) {
+      dynamic ordersMap = event.snapshot.value ?? {};
+      List<Order> orders = [];
+      ordersMap.forEach((key, value) {
+        orders.add(
+          Order.fromJson(
+            Map<String, dynamic>.from(value),
+          ),
+        );
+      });
+      return orders;
+    });
   }
 }

@@ -111,7 +111,7 @@ class _CategoryManageScreenState extends State<CategoryManageScreen> {
                         border: null, hintText: "Category Description"),
                   ),
                 ),
-                CommonBotton(
+                CommonIndicatorButton(
                     isloading: isloading,
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.orange.shade300,

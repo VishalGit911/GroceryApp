@@ -192,7 +192,7 @@ class _ProductManageScreenState extends State<ProductManageScreen> {
                     },
                   ),
                 ),
-                CommonBotton(
+                CommonIndicatorButton(
                     isloading: isloading,
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue.shade300,

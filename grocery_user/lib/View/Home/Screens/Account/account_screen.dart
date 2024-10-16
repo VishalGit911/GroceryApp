@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_user/Firebase/firebase_services.dart';
 import 'package:grocery_user/Model/user.dart';
+import 'package:grocery_user/View/Home/Screens/Order/order_screen.dart';
 import 'package:grocery_user/View/Signi/Email/email_signup.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -89,7 +90,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               ),
                                               Text(
                                                 "${email}",
-                                                style: TextStyle(fontSize: 16),
+                                                style: TextStyle(fontSize: 12),
                                               )
                                             ],
                                           ),
@@ -102,39 +103,91 @@ class _AccountScreenState extends State<AccountScreen> {
                 Expanded(
                     flex: 8,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: ListTile(
-                          title: Text("LogOut"),
-                          trailing: IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text("Are you sore LogOut"),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text("Cencel")),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EmailSignUp(),
-                                                  ),
-                                                  (route) => false);
-                                            },
-                                            child: Text("Ok"))
-                                      ],
-                                    );
-                                  },
-                                );
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => OrderScreen(),
+                                    ));
                               },
-                              icon: Icon(Icons.logout))),
+                              leading: Icon(Icons.shopping_bag_outlined),
+                              title: Text("Order"),
+                              trailing: Icon(Icons.navigate_next_sharp),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ListTile(
+                              onTap: () {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => OrderScreen(),
+                                //     ));
+                              },
+                              leading: Icon(Icons.person),
+                              title: Text("Profile"),
+                              trailing: Icon(Icons.navigate_next_sharp),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ListTile(
+                              onTap: () {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => OrderScreen(),
+                                //     ));
+                              },
+                              leading: Icon(Icons.location_on_outlined),
+                              title: Text("Delivery Address"),
+                              trailing: Icon(Icons.navigate_next_sharp),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ListTile(
+                                leading: Icon(Icons.login_sharp),
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text("Are you sore LogOut"),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Cencel")),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EmailSignUp(),
+                                                    ),
+                                                    (route) => false);
+                                              },
+                                              child: Text("Ok"))
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                title: Text("LogOut"),
+                                trailing: Icon(Icons.navigate_next)),
+                          ),
+                        ],
+                      ),
                     )),
               ],
             ),

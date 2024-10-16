@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget CommonBotton(
+Widget CommonIndicatorButton(
     {required isloading,
     required Color? foregroundColor,
     required Color? backgroundColor,
