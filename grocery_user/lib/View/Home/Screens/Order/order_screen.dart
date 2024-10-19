@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_user/Firebase/firebase_services.dart';
+import 'package:order_tracker/order_tracker.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -45,15 +46,16 @@ class _OrderScreenState extends State<OrderScreen> {
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                              "Total Price : ${snapshot.data![index].status}"),
-                          Text(
-                              "Total Price : ${snapshot.data![index].totalPrice}"),
-                          Text(
-                              "Payment id : ${snapshot.data![index].paymentId}"),
-                          Text("Order id : ${snapshot.data![index].orderId}"),
-                          Text(
-                              "Address : \n${snapshot.data![index].shippingAddress!.buildingno}\n${snapshot.data![index].shippingAddress!.neararea}\n${snapshot.data![index].shippingAddress!.city}\n${snapshot.data![index].shippingAddress!.pincode}"),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                "${snapshot.data![index].shippingAddress!.buildingno}\n${snapshot.data![index].shippingAddress!.neararea}\n${snapshot.data![index].shippingAddress!.city}\n${snapshot.data![index].shippingAddress!.pincode}"),
+                          ),
+                          OrderTracker(
+                            status: Status.delivered,
+                            activeColor: Colors.green,
+                          ),
+                          
                         ],
                       ),
                     ),

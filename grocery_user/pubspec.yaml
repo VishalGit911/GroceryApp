@@ -44,7 +44,9 @@ dependencies:
   curved_navigation_bar:
   shimmer:
   razorpay_flutter:
-
+  order_tracker_zen:
+  intl:
+  order_tracker:
 
 dev_dependencies:
   flutter_test:
