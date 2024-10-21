@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,6 +9,7 @@ import 'package:grocery_user/Model/adress.dart';
 import 'package:grocery_user/Model/cart.dart';
 import 'package:grocery_user/Model/category.dart';
 import 'package:grocery_user/Model/order.dart';
+import 'package:grocery_user/Model/order_tracker.dart';
 import '../Model/product.dart';
 import '../Model/user.dart';
 
@@ -411,5 +413,43 @@ class FirebaseServices {
       });
       return orders;
     });
+  }
+
+  Future<void> trackerdata({required String orderId}) async {
+    String userid = _firebaseAuth.currentUser!.uid;
+    OrderTracker orderTracker = OrderTracker(
+        orderPlaced:
+            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+        shipped:
+            "${DateTime.now().day + 3}/${DateTime.now().month}/${DateTime.now().year}",
+        outOfDelivery:
+            "${DateTime.now().day + 6}/${DateTime.now().month}/${DateTime.now().year}",
+        delivery:
+            "${DateTime.now().day + 9}/${DateTime.now().month}/${DateTime.now().year}",
+        orderId: orderId);
+    await _firebaseDatabase
+        .ref()
+        .child("orderT")
+        .child(userid)
+        .set(orderTracker.toJson());
+  }
+
+  Future<List<OrderTracker>> getTrackerDate() async {
+    List<OrderTracker> orderTrackerList = [];
+    await _firebaseDatabase.ref().child("orderT").onValue.map(
+      (event) {
+        if (event.snapshot.exists) {
+          Map<dynamic, dynamic> trackerMap =
+              event.snapshot.value as Map<dynamic, dynamic>;
+          trackerMap.forEach(
+            (key, value) {
+              OrderTracker orderTracker = OrderTracker.fromJson(value);
+              orderTrackerList.add(orderTracker);
+            },
+          );
+        }
+         return orderTrackerList;
+      },
+    );
   }
 }

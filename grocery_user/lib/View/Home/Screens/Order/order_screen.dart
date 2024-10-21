@@ -10,6 +10,18 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  String? orderPlaced;
+  String? shipped;
+  String? outOfOrder;
+  String? delivred;
+  String? orderId;
+  @override
+  void initState() {
+    List<OrderTracker> demo = await
+    FirebaseServices().getTrackerDate();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +67,6 @@ class _OrderScreenState extends State<OrderScreen> {
                             status: Status.delivered,
                             activeColor: Colors.green,
                           ),
-                          
                         ],
                       ),
                     ),
