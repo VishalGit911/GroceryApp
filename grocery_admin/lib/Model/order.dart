@@ -1,11 +1,10 @@
-import 'package:grocery_user/Model/adress.dart';
-
+import 'adress.dart';
 import 'cart.dart';
 
 class Order {
   String? orderId;
   String? userId;
-  DateTime? orderDate;
+  String? orderDate;
   List<Cart>? items;
   String? paymentId;
   double? totalPrice;

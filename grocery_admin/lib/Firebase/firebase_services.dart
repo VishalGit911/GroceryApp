@@ -13,6 +13,8 @@ import 'package:grocery_admin/Model/product_model.dart';
 import 'package:grocery_admin/Model/user.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../Model/order.dart';
+
 class FirebaseServices {
   static FirebaseServices intance = FirebaseServices.named();
 
@@ -301,5 +303,20 @@ class FirebaseServices {
   String? getUserEmail() {
     String? email = _firebaseAuth.currentUser!.email;
     return email;
+  }
+
+  Stream<List<Order>> orderStream() {
+    return _firebaseDatabase.ref().child('order').onValue.map((event) {
+      dynamic ordersMap = event.snapshot.value ?? {};
+      List<Order> orders = [];
+      ordersMap.forEach((key, value) {
+        orders.add(
+          Order.fromJson(
+            Map<String, dynamic>.from(value),
+          ),
+        );
+      });
+      return orders;
+    });
   }
 }

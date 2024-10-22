@@ -433,23 +433,23 @@ class FirebaseServices {
         .child(userid)
         .set(orderTracker.toJson());
   }
-
-  Future<List<OrderTracker>> getTrackerDate() async {
-    List<OrderTracker> orderTrackerList = [];
-    await _firebaseDatabase.ref().child("orderT").onValue.map(
-      (event) {
-        if (event.snapshot.exists) {
-          Map<dynamic, dynamic> trackerMap =
-              event.snapshot.value as Map<dynamic, dynamic>;
-          trackerMap.forEach(
-            (key, value) {
-              OrderTracker orderTracker = OrderTracker.fromJson(value);
-              orderTrackerList.add(orderTracker);
-            },
-          );
-        }
-         return orderTrackerList;
-      },
-    );
-  }
+  //
+  // Future<List<OrderTracker>> getTrackerDate() async {
+  //   List<OrderTracker> orderTrackerList = [];
+  //   await _firebaseDatabase.ref().child("orderT").onValue.map(
+  //     (event) {
+  //       if (event.snapshot.exists) {
+  //         Map<dynamic, dynamic> trackerMap =
+  //             event.snapshot.value as Map<dynamic, dynamic>;
+  //         trackerMap.forEach(
+  //           (key, value) {
+  //             OrderTracker orderTracker = OrderTracker.fromJson(value);
+  //             orderTrackerList.add(orderTracker);
+  //           },
+  //         );
+  //       }
+  //        return orderTrackerList;
+  //     },
+  //   );
+  // }
 }

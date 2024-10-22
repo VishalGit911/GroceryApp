@@ -121,6 +121,7 @@ class _ShopScreenState extends State<ShopScreen> {
                         children: [
                           CircleAvatar(
                             radius: 40,
+                            backgroundColor: Colors.white,
                             backgroundImage:
                                 NetworkImage(snapshot.data![index].imageUrl),
                           ),

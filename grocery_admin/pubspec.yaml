@@ -41,6 +41,7 @@ dependencies:
   firebase_core:
   image_picker:
   shimmer:
+  order_tracker:
 
 dev_dependencies:
   flutter_test:

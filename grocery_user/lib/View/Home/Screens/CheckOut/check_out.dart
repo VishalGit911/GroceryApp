@@ -93,6 +93,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   final cart = snapshot.data![index];
                   return ListTile(
                     leading: CircleAvatar(
+                      backgroundColor: Colors.white,
                       radius: 35,
                       backgroundImage:
                           NetworkImage(snapshot.data![index].imageUrl),

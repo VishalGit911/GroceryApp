@@ -11,10 +11,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  int quantity = 1;
-
-  Cart? cart;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,18 +40,19 @@ class _CartScreenState extends State<CartScreen> {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  cart = snapshot.data![index];
+                  final cart = snapshot.data![index];
                   return ListTile(
                     leading: CircleAvatar(
                       radius: 35,
+                      backgroundColor: Colors.white,
                       backgroundImage:
                           NetworkImage(snapshot.data![index].imageUrl),
                     ),
                     title: Text("${snapshot.data![index].name}"),
                     trailing: IconButton(
                         onPressed: () {
-                          FirebaseServices()
-                              .deleteCartProduct(cart: cart!, cartID: cart!.id);
+                          FirebaseServices().deleteCartProduct(
+                              cart: cart!, cartID: snapshot.data![index].id);
                         },
                         icon: Icon(Icons.delete)),
                     subtitle: Column(
@@ -73,8 +70,11 @@ class _CartScreenState extends State<CartScreen> {
                                 style: IconButton.styleFrom(
                                     backgroundColor: (Colors.orange.shade300)),
                                 onPressed: () {
-                                  updateCartContity(
-                                      value: false, userData: cart);
+                                  setState(() {
+                                    updateCartContity(
+                                        value: false,
+                                        userData: snapshot.data![index]);
+                                  });
                                 },
                                 icon: Icon(Icons.remove)),
                             Padding(
@@ -88,8 +88,11 @@ class _CartScreenState extends State<CartScreen> {
                                 style: IconButton.styleFrom(
                                     backgroundColor: (Colors.orange.shade300)),
                                 onPressed: () {
-                                  updateCartContity(
-                                      value: true, userData: cart);
+                                  setState(() {
+                                    updateCartContity(
+                                        value: true,
+                                        userData: snapshot.data![index]);
+                                  });
                                 },
                                 icon: Icon(Icons.add))
                           ],
@@ -117,18 +120,18 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void updateCartContity({required bool value, required userData}) {
+  void updateCartContity({required bool value, required Cart userData}) {
     if (value) {
-      cart!.quantity++;
+      userData.quantity++;
     } else {
-      if (cart!.quantity > 1) {
-        cart!.quantity--;
+      if (userData.quantity > 1) {
+        userData.quantity--;
       }
     }
 
     setState(() {
-      cart!.totalPrice = (cart!.price * cart!.quantity).toDouble();
+      userData.totalPrice = (userData.price * userData.quantity).toDouble();
     });
-    FirebaseServices().updataCartProduct(cart: cart!, cartID: cart!.id);
+    FirebaseServices().updataCartProduct(cart: userData, cartID: userData.id);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_user/Firebase/firebase_services.dart';
 import 'package:grocery_user/Model/order.dart';
@@ -22,12 +23,11 @@ class AdressListScreen extends StatefulWidget {
 class _AdressListScreenState extends State<AdressListScreen> {
   late Razorpay _razorpay;
   late UserData _userData;
-  late BuildContext _buildContext;
+  late BuildContext buildContext;
 
   @override
   void initState() {
     _razorpay = Razorpay();
-
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -38,7 +38,6 @@ class _AdressListScreenState extends State<AdressListScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _razorpay.clear();
     super.dispose();
   }
@@ -72,7 +71,7 @@ class _AdressListScreenState extends State<AdressListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _buildContext = context;
+    buildContext = context;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -156,8 +155,14 @@ class _AdressListScreenState extends State<AdressListScreen> {
   _handlePaymentSuccess(PaymentSuccessResponse response) {
     final String paymentId = response.paymentId!;
 
+    print("-------------Payment success----------------");
 
-    storeDataFirebase(paymentId, widget.orderData, context);
+    print(paymentId);
+
+    storeDataFirebase(paymentId, widget.orderData, buildContext);
+
+    print("function callrcf--------------------");
+
     FirebaseServices().trackerdata(orderId: "${response.orderId}");
   }
 
@@ -166,10 +171,10 @@ class _AdressListScreenState extends State<AdressListScreen> {
   _handleExternalWallet() {}
 
   void storeDataFirebase(
-      String paymentId, OrderData orderData, BuildContext context) {
+      String paymentId, OrderData orderData, BuildContext buildContext) {
     Order order = Order(
         items: orderData.cartItems,
-        orderDate: DateTime.now().millisecondsSinceEpoch,
+        orderDate: DateTime(2024, DateTime.now().month, DateTime.now().day),
         paymentId: paymentId,
         shippingAddress: orderData.address,
         status: "Panding",
@@ -186,7 +191,7 @@ class _AdressListScreenState extends State<AdressListScreen> {
       log(value.toString());
 
       if (value) {
-        showPaymentSuccessDialog(context);
+        showPaymentSuccessDialog(buildContext);
 
         print(
             "------------------------------2------------------------------------");
@@ -200,57 +205,45 @@ class _AdressListScreenState extends State<AdressListScreen> {
     });
   }
 
-  Future showPaymentSuccessDialog(BuildContext context) {
-    return showDialog(
+  Future showPaymentSuccessDialog(BuildContext buildContext) {
+    return showCupertinoDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Your Order has been accepted",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              Icon(
+                CupertinoIcons.star_fill, // Star icon for congratulatory feel
+                color: Colors.orangeAccent,
+                size: 50,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                    radius: 80,
-                    backgroundColor: Colors.black,
-                    child: Icon(
-                      Icons.done,
-                      color: Colors.white,
-                      size: 90,
-                    )),
+              SizedBox(height: 10),
+              Text(
+                "Congratulations!",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CommanButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
-                        ),
-                        (route) => false,
-                      );
-                    },
-                    text: Text("OK"),
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white),
-              )
             ],
           ),
+          content: Text(
+            "You have successfully achieved your goal.",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text("OK"),
+              onPressed: () {
+                // Close the dialog when the user taps "OK"
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
         );
       },
     );
